@@ -1,5 +1,8 @@
 use axum::extract::FromRef;
 
+const STATIC_DIR: include_dir::Dir<'static> =
+    include_dir::include_dir!("$CARGO_MANIFEST_DIR/rsc/static");
+
 #[derive(Clone, FromRef)]
 struct AppState {
     hb: handlebars::Handlebars<'static>,
@@ -21,8 +24,11 @@ pub async fn start() {
 
     let app_state = AppState { hb: hb };
 
+    let static_dir_service = tower_serve_static::ServeDir::new(&STATIC_DIR);
+
     let app = axum::Router::new()
         .route("/", axum::routing::get(index))
+        .nest_service("/static", static_dir_service)
         .with_state(app_state);
     let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
     axum::serve(listener, app).await.unwrap();

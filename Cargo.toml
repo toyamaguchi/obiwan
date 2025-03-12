@@ -6,4 +6,6 @@ edition = "2024"
 [dependencies]
 axum = { version = "0.8.1", features = ["macros"] }
 handlebars = "6.3.1"
+include_dir = "0.7.4"
 tokio = { version="1.44.0", features=["full"] }
+tower-serve-static = "0.1.1"
