@@ -17,6 +17,7 @@
 
 #left-column {
     width: 400px;
+    padding: 10px;
     border-right: 1px solid gray;
 }
 
